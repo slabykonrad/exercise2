@@ -15,10 +15,10 @@ public class SimpleCountingFacade implements CountingFacade {
 	}
 	
 	public void countAndInvoke() {
-		synchronized (SimpleCountingFacade.class) {
+		synchronized (this) {
 			invocationCounter++;
-			businessService.executeAction();
 		}
+		businessService.executeAction();
 	}
 	
 	public int getCount() {

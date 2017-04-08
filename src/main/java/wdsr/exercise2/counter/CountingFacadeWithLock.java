@@ -21,11 +21,12 @@ public class CountingFacadeWithLock implements CountingFacade {
 		
 	public void countAndInvoke() {
 		lock.lock();
-		
+
 		invocationCounter++;
-		businessService.executeAction();
-		
+
 		lock.unlock();
+		
+		businessService.executeAction();
 	}
 	
 	public int getCount() {
