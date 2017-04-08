@@ -3,6 +3,9 @@ package wdsr.exercise2.startthread;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.ArrayList;
+import java.util.concurrent.Callable;
+import java.util.List;
 
 public class BusinessServiceWithCallable {
 	private final ExecutorService executorService;	
@@ -28,13 +31,20 @@ public class BusinessServiceWithCallable {
 		// 3. sum up the results - each random number can be retrieved using future.get() method.
 		// 4. return the computed result.
 		
-		for(int i=0; i< 100; i++){
-			Future<Integer> future = executorService.submit( () -> {
+		ArrayList<Callable<Integer>> callableList = new ArrayList<>();
+
+		for(int i = 0; i < 100; ++i){
+			callableList.add( () -> {
 				return helper.nextRandom();
 			});
-			result += future.get();
 		}
 		
+		List<Future<Integer>> futureList = executorService.invokeAll(callableList);
+
+		for (Future<Integer> future: futureList) {
+			result += future.get();
+		}
+
 		return result;
 	}
 }
